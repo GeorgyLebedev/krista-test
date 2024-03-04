@@ -1,5 +1,3 @@
-import axios from "axios";
-
 interface iClient {
     id: string | number,
     name: string,

@@ -15,6 +15,7 @@ td,th
   padding: 5px 10px
   max-width: 250px
   white-space: normal
+  overflow-wrap: break-word
   text-align: center
   vertical-align: middle
   &:has(input)
@@ -49,11 +50,10 @@ td:first-child,th:first-child
   justify-content: center
   width: 100%
 .buttons-container
-  display: flex
-  align-items: center
-  gap: 5px
+  display: table-cell
   height: 100%
   justify-content: center
+  min-width: 85px
 .icon-button
   background: white
   border: none
@@ -65,6 +65,10 @@ td:first-child,th:first-child
     height: 100%
   &:hover>img
     transform: scale(1.2)
+.icon-button:first-child
+  margin-right: 5px
+.icon-button:last-child
+  margin-left: 5px
 .add-new-row-button
   position: absolute
   bottom: 20px

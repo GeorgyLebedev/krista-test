@@ -1,7 +1,7 @@
 <error-component :message="error" @clearError="error=''"></error-component>
-<section ref="tableContainer" class="data-table-container" >
+<section class="data-table-container" >
     <h1 class="data-table-name">Клиенты</h1>
-    <table ref="dataTable" id="dataTable">
+    <table id="dataTable">
 	<thead>
 	<th></th>
 	<th v-for="header in headers">{{ header }}</th>
@@ -10,8 +10,8 @@
 	<tr v-for="client in clients">
 	    <span v-if="clientInEdit?.id!==client.id">
 		<td class="buttons-container">
-		    <button class="icon-button" title="Удалить" type="button" @click="deleteClient(client)">
-			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAvklEQVR4nO3VwQnCMBjF8Qe6hnYRO4FSPNcJ9FxBF9AJdAKdQCcwE9gJdAOPFaFKoFfBvPdJEPuH3JLvR3IJ0PZ5YwAZInQHUH1reNYMfwauin0NR2DvlosFn5ib/1c3g2f2M4IrDeAzAx8N4AMDbw3gDQMvDeAFA08M4JyBUwN4wMB9A7jHwB0ADwH1Z7sguwrwBUIu1uewF+CdAq8FeKXAMwGeKvBIgIcKnACoCbRuzkrNA/9mv7dQ0bbf7wXRGEWDOGx/GAAAAABJRU5ErkJggg==">
+		    <button class="icon-button" title="Удалить" type="button" @click="deleteClient(Number(client.id))">
+			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABQUlEQVR4nO2WQU7DQAxFn0TYlROwRZwFxE2AQ7DkILCoApciLSuQaHqAQaM6UhbJTNrOTNzKT/IqTvu/7ckYDMNIyQvgIvHKCYt3c5h4AFZ7iEsVDXCfwkAzg3gn8WUG2LWxman6dyk6YBjGjtKHODlmAOvAcdgIoXyE1kA7Ia+duN0mJ/Rnj5JzBXwE8vyzheQ+aTHgq9mnApYDeUt51metwUArlQ+ZGBLv39lqMOCjHhDYmRgSX0VGzZU2MFblKmBM1SHud+Iy8BsXwLvWz6iLmNhHvJvbQDVi4E27gXpE/CEmknPWh7g+4DPq33FaLrLFiPiTuMhWEfHqVwkni9nUZa5bO561jFAX35GR6GIruaoOcY5IjhnAOnAcm4Jj9EcGPgsaqHMYuAV+Coj/BW7IxLXcqDnGaSOVzybeMM6Rf7T1UKbi0bgzAAAAAElFTkSuQmCC">
 		    </button>
 		    <button class="icon-button" title="Редактировать" type="button" @click="setClientInEdit(client)">
 			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA/klEQVR4nO2WQQrCMBBF39aNRfA2QvU6eoEs7Up6AY9Rj6BbF269g54iEkhBpI3aopmBeZBVKbw/kxkChmFIogJqFMv7eGrN8l5biKpDXlUIlwhgIf6J09KJ1Kp00kN8sipdIsAWJavSaZD/JoRYeR9Plfi375sYeS9lQMfIe2khhsh7KSHGyHsNA2vyv8AqnwurfC6s8rmobM9nZAqUQDOgC1mfxF0cNMsHVprlA3PpD7OWHVDQzQRY9MyEmMrfgHMiREsjUX7+JPUuRClNPrB8uRapEIU0+cCm425fgBlK2PdsFzUhTj0B7nE7iecKHGMn1nEmwmAbhmEYtDwAfHuD7urk16QAAAAASUVORK5CYII=">

@@ -22,7 +22,7 @@ export const patchRequest = async (client: Client) => {
 }
 
 export const deleteRequest = async (id: number) => {
-    const result =(await axiosModule.delete('/', {data: id})).data
+    const result =(await axiosModule.delete('/', {data:{id:id}})).data
     if (result.errors)
         throw new Error(result.errors[0].message)
 }

@@ -24,6 +24,7 @@ td, th {
   padding: 5px 10px;
   max-width: 250px;
   white-space: normal;
+  overflow-wrap: break-word;
   text-align: center;
   vertical-align: middle;
 }
@@ -70,11 +71,10 @@ td:first-child, th:first-child {
 }
 
 .buttons-container {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  display: table-cell;
   height: 100%;
   justify-content: center;
+  min-width: 85px;
 }
 
 .icon-button {
@@ -90,6 +90,14 @@ td:first-child, th:first-child {
 }
 .icon-button:hover > img {
   transform: scale(1.2);
+}
+
+.icon-button:first-child {
+  margin-right: 5px;
+}
+
+.icon-button:last-child {
+  margin-left: 5px;
 }
 
 .add-new-row-button {
