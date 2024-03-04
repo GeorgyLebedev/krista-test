@@ -68,6 +68,7 @@ td:first-child, th:first-child {
   align-items: center;
   justify-content: center;
   width: 100%;
+  padding-bottom: 10%;
 }
 
 .buttons-container {
@@ -101,18 +102,18 @@ td:first-child, th:first-child {
 }
 
 .add-new-row-button {
-  position: absolute;
+  position: fixed;
   bottom: 20px;
   transition: all 0.1s ease-in;
   padding: 5px 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-size: larger;
+  font-size: large;
   color: #454545;
   background: #96c1ce;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   gap: 10px;
 }
 .add-new-row-button:hover {

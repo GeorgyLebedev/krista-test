@@ -28,7 +28,7 @@
 			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB7klEQVR4nO3ZW0sCQRQA4AErqCjoAqaNe46wKPjan+yhfkVZMVDBFpGXmSUqn+zy0P2ln2JYK+jguq7u7IzbnkfRYT7OjnP2HELSSCON/x1OLrfEEffvyuUV3XtxCZnjALsuwNYkiKZA7AjE1pVtrxJNwQjJcMTD370AfNQLhfzYP+aIex6ioxPj/mXipH8vHOBi7AVq2ewyR3QlTPua0nWiIxPoIRC/XQAMtZAP5iEODCMkIxCrUia+XNumEy3YxQhEESeG+SCalG5PtXD34MsYjvioAsNUIYIwjXx+I2LEkTJEAOYpCkxsCAnDo8R4/07HA+cQ4FMZIgjjlkqbYddq7+zMC8RTGVEPc+lFjREAz2EwHuJMGyIKjDEIn5qs95i9jSruugiOeC4hwtVQujHGIgIw7zeWlet9h1UqC0YjBjAAjWGYmUGMyoxAfOGIl9Jnr81iMUtMjhali3Jm5Ez0P3IzieHSuTE+Wn5ZSUI2xCxhnCQcdmfEXWL8RRjmdjce4wwv631LFKOKxWkqYOMwThLKeCeCt0Rtr7gqmhCxNx1UdlJ0dVCEit5WbJjakNapogZdVRkmzmY2U4XR0ZFnKjrxumYkTPFspH1rWWskpmBRYBIzenMGq9l77cNQgIOJq+VEjKfTSCON5MUPqkM9flp6TNcAAAAASUVORK5CYII=">
 		    </button>
 		</td>
-		<td v-for="(data,key) in client"><input v-model="clientInEdit[key]" :class="{'invalid-input':key.toString()==invalidField}" type="text"></td>
+		<td v-for="(data,key) in client"><input v-model="clientInEdit[key]" @input="updatedData.value=compareObjects(client,clientInEdit)" :class="{'invalid-input':key.toString()==invalidField}" type="text"></td>
 	    </span>
 	</tr>
 	<tr v-if="newClient">

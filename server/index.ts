@@ -22,7 +22,7 @@ const ClientModel = sequelize.define("client", {
         unique: true,
         validate: {
             isNumeric: {
-                msg: "id: поле не корректно!"
+                msg: "id: поле не корректно!|Ожидается уникальное натуральное число"
             }
         }
     },
@@ -31,7 +31,7 @@ const ClientModel = sequelize.define("client", {
         allowNull: false,
         validate: {
             notEmpty: {
-                msg: "name: поле не корректно!"
+                msg: "name: поле не корректно!|Ожидается строка"
             }
         }
     },
@@ -40,7 +40,7 @@ const ClientModel = sequelize.define("client", {
         allowNull: false,
         validate: {
             notEmpty: {
-                msg: "surname: поле не корректно!"
+                msg: "surname: поле не корректно!|Ожидается строка"
             }
         }
     },
@@ -50,7 +50,7 @@ const ClientModel = sequelize.define("client", {
         validate: {
             isDate: {
                 args: true,
-                msg: "birthDate: поле не корректно!",
+                msg: "birthDate: поле не корректно!|Ожидается строка, подобная: \"ДД-ММ-ГГГГ\"",
             }
 
         }
@@ -62,7 +62,7 @@ const ClientModel = sequelize.define("client", {
         validate: {
             is: {
                 args: /^\+?[1-9][0-9]{7,14}$/,
-                msg: "phoneNumber: поле не корректно!",
+                msg: "phoneNumber: поле не корректно!|Ожидается строка, подобная:\"+70001112233\"",
             },
 
         }
@@ -73,17 +73,26 @@ const ClientModel = sequelize.define("client", {
         unique: true,
         validate: {
             isEmail: {
-                msg: "email: поле не корректно!"
+                msg: "email: поле не корректно!|Ожидается уникальная строка, подобная:\"Example@email.com\""
             }
         }
     },
     createdAt: {
         type: DataTypes.DATE,
         allowNull: true,
-    }
-},{
-    updatedAt:false,
-    timestamps:true
+        validate: {
+            isValidDate(value: string) {
+                if (!value) return
+                // Валидация даты
+                if (isNaN(Date.parse(value))) {
+                    throw new Error("createdAt: поле не корректно!|Ожидается строка, подобная: \"ДД-ММ-ГГГГ\"");
+                }
+            }
+        }
+        }
+}, {
+    updatedAt: false,
+    timestamps: true
 })
 await ClientModel.sync();
 app.use(cors({
@@ -98,7 +107,7 @@ app.listen(app.get('port'), () => { // вывод информации о зап
 
 app.get('/clients', async (req, res) => {
     try {
-        const result=await ClientModel.findAll()
+        const result = await ClientModel.findAll({order: [['id', 'asc']]})
         res.json(result)
     } catch
         (e: any) {
@@ -107,23 +116,27 @@ app.get('/clients', async (req, res) => {
 })
 app.post('/clients', async (req, res) => {
     try {
-        const result=await ClientModel.create(req.body)
+        const result = await ClientModel.create(req.body)
         res.json(result)
     } catch (e: any) {
         res.json(e)
     }
 })
-/*app.patch('/clients', async (req, res) => {
+app.patch('/clients/:id', async (req, res) => {
     try {
-        const result=await ClientModel.update({where:{id:req.body.id}})
+        const result = await ClientModel.update(req.body.value, {
+            where: {
+                id: req.params.id
+            }
+        })
         res.json(result)
     } catch (e: any) {
         res.json(e)
     }
-})*/
+})
 app.delete('/clients', async (req, res) => {
     try {
-        const result=await ClientModel.destroy({where:{id:req.body.id}})
+        const result = await ClientModel.destroy({where: {id: req.body.id}})
         res.json(result)
     } catch (e: any) {
         res.json(e)

@@ -2,6 +2,7 @@ import {computed, defineComponent, Ref, ref, onMounted} from "vue";
 import Client from "@/types/Client";
 import {getRequest, postRequest, patchRequest, deleteRequest} from "@/modules/axiosModule";
 import errorComponent from "@/components/error-component/error-component.vue";
+import compareObjects from "@/helpers/compareObjects";
 export default defineComponent({
     name: "tableComponent",
     components:{
@@ -18,6 +19,7 @@ export default defineComponent({
         const clients: Ref<Array<Client> | []> = ref([])
         const clientInEdit: Ref<Client | null> = ref(null)
         const newClient: Ref<Client | null> = ref(null)
+        const updatedData=ref({})
         const error=ref("")
 
         const invalidField = computed(()=>{
@@ -25,7 +27,7 @@ export default defineComponent({
         })
         const clearError=()=>error.value=""
         const setClientInEdit = (client: Client) =>
-            clientInEdit.value = client
+            clientInEdit.value = Object.assign({}, client)
         const createNewClient = () =>
             newClient.value = new Client()
 
@@ -41,7 +43,8 @@ export default defineComponent({
             try {
                 clearError()
                 if (clientInEdit.value === null) return
-                await patchRequest(clientInEdit.value)
+                console.log(updatedData.value)
+                await patchRequest(updatedData.value, Number(clientInEdit.value.id))
                 await getClients()
                 clientInEdit.value=null
             } catch (e: any) {
@@ -56,12 +59,12 @@ export default defineComponent({
                 await getClients()
                 newClient.value=null
             } catch (e: any) {
-                console.log(e)
                 error.value=e.message
             }
         }
         const deleteClient = async (id: number) => {
             try {
+                if(!confirm("Вы уверены что хотите удалить строку с id:"+id)) return
                 clearError()
                 await deleteRequest(id)
                 await getClients()
@@ -81,12 +84,14 @@ export default defineComponent({
             clientInEdit,
             newClient,
             invalidField,
+            updatedData,
             setClientInEdit,
             createNewClient,
             cancelChanges,
             deleteClient,
             updateClient,
-            addClient
+            addClient,
+            compareObjects,
         }
     }
 

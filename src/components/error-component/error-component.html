@@ -6,7 +6,8 @@
     </div>
     <hr>
     <div class="error-container-body">
-	<p class="error-message-text">{{message}}</p>
+	<p class="error-message-text">{{messageText}}</p>
+	<p class="error-message-expected-input" v-if="expectedInput.length">{{expectedInput}}</p>
     </div>
 </section>
 </transition>

@@ -1,4 +1,4 @@
-import {defineComponent, ref, watch} from "vue";
+import {computed, defineComponent, ref, watch} from "vue";
 export default defineComponent({
     name: "error-component",
     props:{
@@ -7,5 +7,17 @@ export default defineComponent({
             required: true
         }
     },
-    emits:['clearError']
+    emits:['clearError'],
+    setup(props){
+        const expectedInput=computed(()=>{
+            return props.message.split('|')[1]?? ""
+        })
+        const messageText=computed(()=>{
+            return props.message.split('|')[0]?? props.message
+        })
+        return{
+            expectedInput,
+            messageText
+        }
+    }
 })
