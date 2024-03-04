@@ -1,27 +1,31 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <table-component></table-component>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
-
+import tableComponent from "@/components/table-component/table-component.vue";
 export default defineComponent({
   name: 'App',
-  components: {
-    HelloWorld
-  }
+    components:{
+      tableComponent
+    }
 });
 </script>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="sass">
+body
+  margin: 0
+  padding: 0
+  width: calc(100vw - 20px)
+  height: 100vh
+#app
+  font-family: Roboto
+  width: 100%
+  height: 100%
+  margin: 0
+  padding: 0
+*
+  box-sizing: border-box
+
 </style>

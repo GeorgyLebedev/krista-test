@@ -1,0 +1,83 @@
+table
+  padding-inline: 20px
+thead
+  background: #96c1ce
+tr
+  transition: all 0.2s ease-in-out
+  position: relative
+  &:nth-child(even)
+    background: gainsboro
+  &:nth-child(odd)
+    background: #f3f3f3
+  &:hover
+    background: lightblue
+td,th
+  padding: 5px 10px
+  max-width: 250px
+  white-space: normal
+  text-align: center
+  vertical-align: middle
+  &:has(input)
+    padding: 0
+    background: white
+
+button
+  cursor: pointer
+input[type='text']
+  min-width: 100px
+  width: 100%
+  padding: 5px
+  margin: 0
+  text-align: center
+  font-size: 12pt
+  font-family: Roboto
+  outline: none
+  border-radius: 5px
+  border: 1px solid gray
+  &.invalid-input
+    background: #ffcfcf
+    border-color: #ff4848
+span
+  display: contents
+
+td:first-child,th:first-child
+  background: white
+.data-table-container
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  width: 100%
+.buttons-container
+  display: flex
+  align-items: center
+  gap: 5px
+  height: 100%
+  justify-content: center
+.icon-button
+  background: white
+  border: none
+  padding: 0
+  width: 25px
+  height: 25px
+  >img
+    width: 100%
+    height: 100%
+  &:hover>img
+    transform: scale(1.2)
+.add-new-row-button
+  position: absolute
+  bottom: 20px
+  transition: all .1s ease-in
+  padding: 5px 10px
+  display: flex
+  flex-direction: row
+  align-items: center
+  font-size: larger
+  color: #454545
+  background: #96c1ce
+  border: none
+  border-radius: 10px
+  gap: 10px
+  &:hover
+    transform: scale(1.1)

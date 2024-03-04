@@ -1,0 +1,12 @@
+<transition>
+<section class="error-container" v-if="message">
+    <div class="error-container-header">
+	<p class="error-title">Ошибка!</p>
+	<span class="error-close-button" @click="$emit('clearError')">❌</span>
+    </div>
+    <hr>
+    <div class="error-container-body">
+	<p class="error-message-text">{{message}}</p>
+    </div>
+</section>
+</transition>
