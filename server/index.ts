@@ -1,10 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import {DataTypes, Dialect, Sequelize} from 'sequelize'
-
 const app = express()
 import 'dotenv/config'
-
 app.set('port', 1111)
 const sequelize = new Sequelize(
     process.env.DB_NAME as string,
@@ -107,7 +105,10 @@ app.listen(app.get('port'), () => { // вывод информации о зап
 
 app.get('/clients', async (req, res) => {
     try {
-        const result = await ClientModel.findAll({order: [['id', 'asc']]})
+        const result = await ClientModel.findAll({
+            attributes:{include:[[sequelize.cast(sequelize.col('createdAt'), 'VARCHAR') , 'createdAt']],exclude:['createdAt']},
+            order: [['id', 'asc']]
+        })
         res.json(result)
     } catch
         (e: any) {

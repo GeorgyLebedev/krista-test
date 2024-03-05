@@ -1,8 +1,11 @@
 <error-component
 	:message="error"
-	@clearError="error=''">
+>
 </error-component>
-<section class="data-table-container" id="dataTableContainer">
+<section class="preloader-container" v-if="clients===undefined&&!error.length">
+    <div class="preloader-circle"></div>
+</section>
+<section class="data-table-container" id="dataTableContainer" v-if="clients!==undefined">
     <h1 class="data-table-name">Клиенты</h1>
     <table id="dataTable">
 	<thead>
@@ -60,6 +63,9 @@
 	<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABGUlEQVR4nO2Z4UrDQBCE9zG0PkwgzCRYfZ6mfy0+VvWZpPrHX5WjGyilRy6e7Z06H+y/PdjNzEGSMRNCfIuu6x4BvAD4ILkvXO8+y8OsJUg+VzD8/lwB2CQr4Qc+Sa4ALKwwABYABp8pzLZMOfTqzYNVBoDBldlONgc/hua+72+tMpqmufGHvJtsHr1olcLU+bTIlaAUyeSnrcpSimiRCFIkF1krgqyVi6wVQdb609bihT9nTYscoXet33hH5qBFIkiRXGStCLJWLrJWBFmrNqg/jZXBf6cIgJ2HKcUjt1Patr3zRd5sipCeVhy9rZOjtxABj2GoB5DVhaEk71MPbkrH0IzX09ynsAwSjnemZOEwwzZZCSGEnfIFWwzgGWRgGbgAAAAASUVORK5CYII=">
 	Добавить
     </button>
+</section>
+<section v-else-if="error==='Network Error'" class="server-unavailable-message-container">
+    <h1 class="server-unavailable-message">Сервер недоступен</h1>
 </section>
 
 
