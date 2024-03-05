@@ -39,64 +39,6 @@
 		</td>
 	    </span>
 	</tr>
-	<tr v-for="client in clients">
-	    <span v-if="clientInEdit?.id!==client.id">
-		<td class="buttons-container">
-		    <button class="icon-button" title="Удалить" type="button" @click="deleteClient(Number(client.id))">
-			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABQUlEQVR4nO2WQU7DQAxFn0TYlROwRZwFxE2AQ7DkILCoApciLSuQaHqAQaM6UhbJTNrOTNzKT/IqTvu/7ckYDMNIyQvgIvHKCYt3c5h4AFZ7iEsVDXCfwkAzg3gn8WUG2LWxman6dyk6YBjGjtKHODlmAOvAcdgIoXyE1kA7Ia+duN0mJ/Rnj5JzBXwE8vyzheQ+aTHgq9mnApYDeUt51metwUArlQ+ZGBLv39lqMOCjHhDYmRgSX0VGzZU2MFblKmBM1SHud+Iy8BsXwLvWz6iLmNhHvJvbQDVi4E27gXpE/CEmknPWh7g+4DPq33FaLrLFiPiTuMhWEfHqVwkni9nUZa5bO561jFAX35GR6GIruaoOcY5IjhnAOnAcm4Jj9EcGPgsaqHMYuAV+Coj/BW7IxLXcqDnGaSOVzybeMM6Rf7T1UKbi0bgzAAAAAElFTkSuQmCC">
-		    </button>
-		    <button class="icon-button" title="Редактировать" type="button" @click="setClientInEdit(client)">
-			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA/klEQVR4nO2WQQrCMBBF39aNRfA2QvU6eoEs7Up6AY9Rj6BbF269g54iEkhBpI3aopmBeZBVKbw/kxkChmFIogJqFMv7eGrN8l5biKpDXlUIlwhgIf6J09KJ1Kp00kN8sipdIsAWJavSaZD/JoRYeR9Plfi375sYeS9lQMfIe2khhsh7KSHGyHsNA2vyv8AqnwurfC6s8rmobM9nZAqUQDOgC1mfxF0cNMsHVprlA3PpD7OWHVDQzQRY9MyEmMrfgHMiREsjUX7+JPUuRClNPrB8uRapEIU0+cCm425fgBlK2PdsFzUhTj0B7nE7iecKHGMn1nEmwmAbhmEYtDwAfHuD7urk16QAAAAASUVORK5CYII=">
-		    </button>
-		</td>
-		<td v-for="data in client">{{ data }}</td>
-	    </span>
-	    <span v-else>
-		<td class="buttons-container">
-		    <button class="icon-button" title="Сохранить" type="button" @click="updateClient()">
-			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABHklEQVR4nGNgGAXDDhinGbNKVTgL08Rw+3p7FoVipzUKxY6XqG9JaCizQpHTUsVip/+KRU475evtOahreLHjEpDhCsWOu2QKLTipbfhisOFFjrupa3h9PZNikdMiaLAcFC925aay4Y4LoC4/pJVlz4NXvWypixTR3quvZ1IocpoHcbnjfsl6Hy686pWKXcUUipzuEBWG9SDDHeeADS92OkBcsCBFFCgs8XiXUaHIaSokWJyOqJda8RI2HIslOMKUUaHYcQokKTodJc1wJEtgqQLNEkaFIsfJlBmObEmx00KYJeqlVryKxU6ToBF6TCXXg498w7FYoljk+BQaocepYzhyOi92nA+15KxchY0g9QxHtaRSqdyFn/qGjwJ6AQB6A4BJZcBEzQAAAABJRU5ErkJggg==">
-		    </button>
-		    <button class="icon-button" title="Отмена" type="button" @click="cancelChanges()">
-			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB7klEQVR4nO3ZW0sCQRQA4AErqCjoAqaNe46wKPjan+yhfkVZMVDBFpGXmSUqn+zy0P2ln2JYK+jguq7u7IzbnkfRYT7OjnP2HELSSCON/x1OLrfEEffvyuUV3XtxCZnjALsuwNYkiKZA7AjE1pVtrxJNwQjJcMTD370AfNQLhfzYP+aIex6ioxPj/mXipH8vHOBi7AVq2ewyR3QlTPua0nWiIxPoIRC/XQAMtZAP5iEODCMkIxCrUia+XNumEy3YxQhEESeG+SCalG5PtXD34MsYjvioAsNUIYIwjXx+I2LEkTJEAOYpCkxsCAnDo8R4/07HA+cQ4FMZIgjjlkqbYddq7+zMC8RTGVEPc+lFjREAz2EwHuJMGyIKjDEIn5qs95i9jSruugiOeC4hwtVQujHGIgIw7zeWlet9h1UqC0YjBjAAjWGYmUGMyoxAfOGIl9Jnr81iMUtMjhali3Jm5Ez0P3IzieHSuTE+Wn5ZSUI2xCxhnCQcdmfEXWL8RRjmdjce4wwv631LFKOKxWkqYOMwThLKeCeCt0Rtr7gqmhCxNx1UdlJ0dVCEit5WbJjakNapogZdVRkmzmY2U4XR0ZFnKjrxumYkTPFspH1rWWskpmBRYBIzenMGq9l77cNQgIOJq+VEjKfTSCON5MUPqkM9flp6TNcAAAAASUVORK5CYII=">
-		    </button>
-		</td>
-		<td v-for="(data,key) in client">
-		    <input v-model="clientInEdit[key]"
-			   :class="{'invalid-input':key.toString()==invalidField}"
-			   :disabled="key==='id'"
-			   type="text">
-		</td>
-	    </span>
-	</tr>
-	<tr v-for="client in clients">
-	    <span v-if="clientInEdit?.id!==client.id">
-		<td class="buttons-container">
-		    <button class="icon-button" title="Удалить" type="button" @click="deleteClient(Number(client.id))">
-			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABQUlEQVR4nO2WQU7DQAxFn0TYlROwRZwFxE2AQ7DkILCoApciLSuQaHqAQaM6UhbJTNrOTNzKT/IqTvu/7ckYDMNIyQvgIvHKCYt3c5h4AFZ7iEsVDXCfwkAzg3gn8WUG2LWxman6dyk6YBjGjtKHODlmAOvAcdgIoXyE1kA7Ia+duN0mJ/Rnj5JzBXwE8vyzheQ+aTHgq9mnApYDeUt51metwUArlQ+ZGBLv39lqMOCjHhDYmRgSX0VGzZU2MFblKmBM1SHud+Iy8BsXwLvWz6iLmNhHvJvbQDVi4E27gXpE/CEmknPWh7g+4DPq33FaLrLFiPiTuMhWEfHqVwkni9nUZa5bO561jFAX35GR6GIruaoOcY5IjhnAOnAcm4Jj9EcGPgsaqHMYuAV+Coj/BW7IxLXcqDnGaSOVzybeMM6Rf7T1UKbi0bgzAAAAAElFTkSuQmCC">
-		    </button>
-		    <button class="icon-button" title="Редактировать" type="button" @click="setClientInEdit(client)">
-			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA/klEQVR4nO2WQQrCMBBF39aNRfA2QvU6eoEs7Up6AY9Rj6BbF269g54iEkhBpI3aopmBeZBVKbw/kxkChmFIogJqFMv7eGrN8l5biKpDXlUIlwhgIf6J09KJ1Kp00kN8sipdIsAWJavSaZD/JoRYeR9Plfi375sYeS9lQMfIe2khhsh7KSHGyHsNA2vyv8AqnwurfC6s8rmobM9nZAqUQDOgC1mfxF0cNMsHVprlA3PpD7OWHVDQzQRY9MyEmMrfgHMiREsjUX7+JPUuRClNPrB8uRapEIU0+cCm425fgBlK2PdsFzUhTj0B7nE7iecKHGMn1nEmwmAbhmEYtDwAfHuD7urk16QAAAAASUVORK5CYII=">
-		    </button>
-		</td>
-		<td v-for="data in client">{{ data }}</td>
-	    </span>
-	    <span v-else>
-		<td class="buttons-container">
-		    <button class="icon-button" title="Сохранить" type="button" @click="updateClient()">
-			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABHklEQVR4nGNgGAXDDhinGbNKVTgL08Rw+3p7FoVipzUKxY6XqG9JaCizQpHTUsVip/+KRU475evtOahreLHjEpDhCsWOu2QKLTipbfhisOFFjrupa3h9PZNikdMiaLAcFC925aay4Y4LoC4/pJVlz4NXvWypixTR3quvZ1IocpoHcbnjfsl6Hy686pWKXcUUipzuEBWG9SDDHeeADS92OkBcsCBFFCgs8XiXUaHIaSokWJyOqJda8RI2HIslOMKUUaHYcQokKTodJc1wJEtgqQLNEkaFIsfJlBmObEmx00KYJeqlVryKxU6ToBF6TCXXg498w7FYoljk+BQaocepYzhyOi92nA+15KxchY0g9QxHtaRSqdyFn/qGjwJ6AQB6A4BJZcBEzQAAAABJRU5ErkJggg==">
-		    </button>
-		    <button class="icon-button" title="Отмена" type="button" @click="cancelChanges()">
-			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB7klEQVR4nO3ZW0sCQRQA4AErqCjoAqaNe46wKPjan+yhfkVZMVDBFpGXmSUqn+zy0P2ln2JYK+jguq7u7IzbnkfRYT7OjnP2HELSSCON/x1OLrfEEffvyuUV3XtxCZnjALsuwNYkiKZA7AjE1pVtrxJNwQjJcMTD370AfNQLhfzYP+aIex6ioxPj/mXipH8vHOBi7AVq2ewyR3QlTPua0nWiIxPoIRC/XQAMtZAP5iEODCMkIxCrUia+XNumEy3YxQhEESeG+SCalG5PtXD34MsYjvioAsNUIYIwjXx+I2LEkTJEAOYpCkxsCAnDo8R4/07HA+cQ4FMZIgjjlkqbYddq7+zMC8RTGVEPc+lFjREAz2EwHuJMGyIKjDEIn5qs95i9jSruugiOeC4hwtVQujHGIgIw7zeWlet9h1UqC0YjBjAAjWGYmUGMyoxAfOGIl9Jnr81iMUtMjhali3Jm5Ez0P3IzieHSuTE+Wn5ZSUI2xCxhnCQcdmfEXWL8RRjmdjce4wwv631LFKOKxWkqYOMwThLKeCeCt0Rtr7gqmhCxNx1UdlJ0dVCEit5WbJjakNapogZdVRkmzmY2U4XR0ZFnKjrxumYkTPFspH1rWWskpmBRYBIzenMGq9l77cNQgIOJq+VEjKfTSCON5MUPqkM9flp6TNcAAAAASUVORK5CYII=">
-		    </button>
-		</td>
-		<td v-for="(data,key) in client">
-		    <input v-model="clientInEdit[key]"
-			   :class="{'invalid-input':key.toString()==invalidField}"
-			   :disabled="key==='id'"
-			   type="text">
-		</td>
-	    </span>
-	</tr>
 	<tr v-if="newClient">
 		<td class="buttons-container">
 		    <button class="icon-button" title="Сохранить" type="button" @click="addClient()">
