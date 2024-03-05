@@ -15,15 +15,19 @@ export default defineComponent({
             document.getElementById('dataTable')!.style.minWidth = `${elementWidth}px`;
             await getClients()
         })
-        const headers = computed(() => Object.keys(new Client()))
+        const headers:Array<string> = Object.keys(new Client())
         const clients: Ref<Array<Client> | []> = ref([])
         const clientInEdit: Ref<Client | null> = ref(null)
         const newClient: Ref<Client | null> = ref(null)
-        const updatedData=ref({})
-        const error=ref("")
+        const updatedData:Ref<any>=ref({})
+        const error:Ref<string>=ref("")
 
         const invalidField = computed(()=>{
-            return error.value.split(':')[0]
+            if(!error.value.length) return ""
+            for(const key of Object.keys(new Client()))
+                if(error.value.includes(key))
+                   return key
+            return ""
         })
         const clearError=()=>error.value=""
         const setClientInEdit = (client: Client) =>
@@ -43,7 +47,6 @@ export default defineComponent({
             try {
                 clearError()
                 if (clientInEdit.value === null) return
-                console.log(updatedData.value)
                 await patchRequest(updatedData.value, Number(clientInEdit.value.id))
                 await getClients()
                 clientInEdit.value=null
@@ -64,7 +67,7 @@ export default defineComponent({
         }
         const deleteClient = async (id: number) => {
             try {
-                if(!confirm("Вы уверены что хотите удалить строку с id:"+id)) return
+                if(!confirm("Вы уверены что хотите удалить строку с id: "+id)) return
                 clearError()
                 await deleteRequest(id)
                 await getClients()
