@@ -16,13 +16,14 @@ export const postRequest = async (client: Client) => {
     checkResponseErrors(result)
 }
 
-export const patchRequest = async (data: any, id:number) => {
-    const result=(await axiosModule.patch(`/${id}`, data)).data
+export const patchRequest = async (client: Client) => {
+    const {id, ...data}=client
+    const result=(await axiosModule.put(`/${id}`, data)).data
     checkResponseErrors(result)
 }
 
 export const deleteRequest = async (id: number) => {
-    const result =(await axiosModule.delete('/', {data:{id:id}})).data
+    const result =(await axiosModule.delete(`/${id}`)).data
     checkResponseErrors(result)
 }
 

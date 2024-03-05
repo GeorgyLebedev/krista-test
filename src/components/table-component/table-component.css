@@ -22,6 +22,7 @@ tr:hover {
 
 td, th {
   padding: 5px 10px;
+  min-width: 120px;
   max-width: 250px;
   white-space: normal;
   overflow-wrap: break-word;
@@ -38,9 +39,9 @@ button {
 }
 
 input[type=text] {
-  min-width: 100px;
+  min-width: 120px;
   width: 100%;
-  padding: 5px;
+  padding: 5px 10px;
   margin: 0;
   text-align: center;
   font-size: 12pt;
@@ -52,6 +53,9 @@ input[type=text] {
 input[type=text].invalid-input {
   background: #ffcfcf;
   border-color: #ff4848;
+}
+input[type=text]:disabled {
+  background: #eaeaea;
 }
 
 span {
@@ -67,8 +71,9 @@ td:first-child, th:first-child {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  padding-bottom: 10%;
+  width: min-content;
+  margin: auto;
+  padding-bottom: max(10%, 200px);
 }
 
 .buttons-container {
@@ -102,7 +107,7 @@ td:first-child, th:first-child {
 }
 
 .add-new-row-button {
-  position: fixed;
+  margin-top: 20px;
   bottom: 20px;
   transition: all 0.1s ease-in;
   padding: 5px 10px;
@@ -115,6 +120,9 @@ td:first-child, th:first-child {
   border: none;
   border-radius: 5px;
   gap: 10px;
+}
+.add-new-row-button > img {
+  width: 35px;
 }
 .add-new-row-button:hover {
   transform: scale(1.1);

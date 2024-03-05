@@ -122,9 +122,9 @@ app.post('/clients', async (req, res) => {
         res.json(e)
     }
 })
-app.patch('/clients/:id', async (req, res) => {
+app.put('/clients/:id', async (req, res) => {
     try {
-        const result = await ClientModel.update(req.body.value, {
+        const result = await ClientModel.update(req.body, {
             where: {
                 id: req.params.id
             }
@@ -134,9 +134,9 @@ app.patch('/clients/:id', async (req, res) => {
         res.json(e)
     }
 })
-app.delete('/clients', async (req, res) => {
+app.delete('/clients/:id', async (req, res) => {
     try {
-        const result = await ClientModel.destroy({where: {id: req.body.id}})
+        const result = await ClientModel.destroy({where: {id: req.params.id}})
         res.json(result)
     } catch (e: any) {
         res.json(e)

@@ -2,7 +2,6 @@ import {computed, defineComponent, Ref, ref, onMounted} from "vue";
 import Client from "@/types/Client";
 import {getRequest, postRequest, patchRequest, deleteRequest} from "@/modules/axiosModule";
 import errorComponent from "@/components/error-component/error-component.vue";
-import compareObjects from "@/helpers/compareObjects";
 export default defineComponent({
     name: "tableComponent",
     components:{
@@ -19,9 +18,7 @@ export default defineComponent({
         const clients: Ref<Array<Client> | []> = ref([])
         const clientInEdit: Ref<Client | null> = ref(null)
         const newClient: Ref<Client | null> = ref(null)
-        const updatedData:Ref<any>=ref({})
         const error:Ref<string>=ref("")
-
         const invalidField = computed(()=>{
             if(!error.value.length) return ""
             for(const key of Object.keys(new Client()))
@@ -29,7 +26,6 @@ export default defineComponent({
                    return key
             return ""
         })
-        const clearError=()=>error.value=""
         const setClientInEdit = (client: Client) =>
             clientInEdit.value = Object.assign({}, client)
         const createNewClient = () =>
@@ -37,7 +33,7 @@ export default defineComponent({
 
         const getClients = async () => {
             try {
-                clearError()
+                error.value=""
                 clients.value = await getRequest()
             } catch (e: any) {
                 error.value=e.message
@@ -45,9 +41,9 @@ export default defineComponent({
         }
         const updateClient = async () => {
             try {
-                clearError()
+                error.value=""
                 if (clientInEdit.value === null) return
-                await patchRequest(updatedData.value, Number(clientInEdit.value.id))
+                await patchRequest(clientInEdit.value)
                 await getClients()
                 clientInEdit.value=null
             } catch (e: any) {
@@ -56,7 +52,7 @@ export default defineComponent({
         }
         const addClient = async () => {
             try {
-                clearError()
+                error.value=""
                 if (newClient.value === null) return
                 await postRequest(newClient.value)
                 await getClients()
@@ -68,7 +64,7 @@ export default defineComponent({
         const deleteClient = async (id: number) => {
             try {
                 if(!confirm("Вы уверены что хотите удалить строку с id: "+id)) return
-                clearError()
+                error.value=""
                 await deleteRequest(id)
                 await getClients()
             } catch (e: any) {
@@ -76,7 +72,7 @@ export default defineComponent({
             }
         }
         const cancelChanges = () => {
-            clearError()
+            error.value=""
             clientInEdit.value = null
             newClient.value = null
         }
@@ -87,14 +83,12 @@ export default defineComponent({
             clientInEdit,
             newClient,
             invalidField,
-            updatedData,
             setClientInEdit,
             createNewClient,
             cancelChanges,
             deleteClient,
             updateClient,
             addClient,
-            compareObjects,
         }
     }
 
