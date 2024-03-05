@@ -1,22 +1,13 @@
-import {DataTypes, Dialect, Sequelize} from "sequelize";
-
-const sequelize = new Sequelize(
-    process.env.DB_NAME as string,
-    process.env.DB_USER as string,
-    process.env.DB_PASSWORD as string,
-    {
-        port: process.env.DB_PORT as unknown as number,
-        dialect: process.env.DB_DIALECT as Dialect
-    }
-)
-const ClientModel = sequelize.define("client", {
+import {connection} from "../connection.js";
+import {DataTypes} from "sequelize";
+export const ClientModel = connection.define("client", {
     id: {
         primaryKey: true,
         type: DataTypes.INTEGER,
         unique: true,
         validate: {
             isNumeric: {
-                msg: "id: поле не корректно!"
+                msg: "id: поле не корректно!|Ожидается уникальное натуральное число"
             }
         }
     },
@@ -25,7 +16,7 @@ const ClientModel = sequelize.define("client", {
         allowNull: false,
         validate: {
             notEmpty: {
-                msg: "name: поле не корректно!"
+                msg: "name: поле не корректно!|Ожидается строка"
             }
         }
     },
@@ -34,17 +25,17 @@ const ClientModel = sequelize.define("client", {
         allowNull: false,
         validate: {
             notEmpty: {
-                msg: "surname: поле не корректно!"
+                msg: "surname: поле не корректно!|Ожидается строка"
             }
         }
     },
     birthDate: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
         validate: {
             isDate: {
-                args:true,
-                msg: "birthDate: поле не корректно!",
+                args: true,
+                msg: "birthDate: поле не корректно!|Ожидается строка, подобная: \"ДД-ММ-ГГГГ\"",
             }
 
         }
@@ -55,8 +46,8 @@ const ClientModel = sequelize.define("client", {
         unique: true,
         validate: {
             is: {
-                args:/^\+?[1-9][0-9]{7,14}$/,
-                msg: "phoneNumber: поле не корректно!",
+                args: /^\+?[1-9][0-9]{7,14}$/,
+                msg: "phoneNumber: поле не корректно!|Ожидается строка, подобная:\"+70001112233\"",
             },
 
         }
@@ -67,22 +58,24 @@ const ClientModel = sequelize.define("client", {
         unique: true,
         validate: {
             isEmail: {
-                msg: "email: поле не корректно!"
+                msg: "email: поле не корректно!|Ожидается уникальная строка, подобная:\"Example@email.com\""
             }
         }
     },
     createdAt: {
         type: DataTypes.DATE,
         allowNull: true,
-        defaultValue: Date.now(),
         validate: {
-            isDate: {
-                args:true,
-                msg: "createdAt: поле не корректно!",
+            isValidDate(value:any) {
+                if (!value) return
+                // Валидация даты
+                if (isNaN(Date.parse(value))) {
+                    throw new Error("createdAt: поле не корректно!|Ожидается строка, подобная: \"ДД-ММ-ГГГГ\"");
+                }
             }
-
         }
     }
+}, {
+    updatedAt: false,
+    timestamps: true
 })
-
-export default ClientModel

@@ -22,7 +22,8 @@ td,th
   &:has(input)
     padding: 0
     background: white
-
+  &:first-child
+    background: white
 button
   cursor: pointer
 input[type='text']
@@ -44,8 +45,6 @@ input[type='text']
 span
   display: contents
 
-td:first-child,th:first-child
-  background: white
 .data-table-container
   display: flex
   flex-direction: column

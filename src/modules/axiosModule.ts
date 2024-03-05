@@ -12,7 +12,6 @@ export const getRequest = async () => {
 
 export const postRequest = async (client: Client) => {
     const result = (await axiosModule.post('/', client)).data
-    console.log(result)
     checkResponseErrors(result)
 }
 

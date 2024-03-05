@@ -33,6 +33,9 @@ td:has(input), th:has(input) {
   padding: 0;
   background: white;
 }
+td:first-child, th:first-child {
+  background: white;
+}
 
 button {
   cursor: pointer;
@@ -60,10 +63,6 @@ input[type=text]:disabled {
 
 span {
   display: contents;
-}
-
-td:first-child, th:first-child {
-  background: white;
 }
 
 .data-table-container {

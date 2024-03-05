@@ -12,28 +12,28 @@ export default defineComponent({
         onMounted(async () => {
             await getClients()
             if(!clients.value?.length) return
-            const elementWidth = document.getElementById('dataTable')!.offsetWidth;
+            const elementWidth = document.getElementById('dataTable')!.offsetWidth; //настраиваем статичную ширину таблицы
             document.getElementById('dataTable')!.style.maxWidth = `${elementWidth}px`;
             document.getElementById('dataTable')!.style.minWidth = `${elementWidth}px`;
         })
-        const headers: Array<string> = Object.keys(new Client())
-        const clients: Ref<Array<Client> | []|undefined> = ref(undefined)
-        const clientInEdit: Ref<Client | null> = ref(null)
-        const newClient: Ref<Client | null> = ref(null)
-        const error: Ref<string> = ref("")
-        const invalidField = computed(() => {
+        const headers: Array<string> = Object.keys(new Client()) //Список заголовков таблицы
+        const clients: Ref<Array<Client> | []|undefined> = ref(undefined) //Массив данных о клиентах
+        const clientInEdit: Ref<Client | null> = ref(null) //Редактируемые данные клиента
+        const newClient: Ref<Client | null> = ref(null) //Данные нового клиента
+        const error: Ref<string> = ref("") //Сообщение об ошибке
+        const invalidField = computed(() => { //Вычисляемое свойство с именем некорректного поля
             if (!error.value.length) return ""
             for (const key of Object.keys(new Client()))
                 if (error.value.includes(key))
                     return key
             return ""
         })
-        const setClientInEdit = (client: Client) =>
+        const setClientInEdit = (client: Client) => //Установка значений для полей ввода при редактировании
             clientInEdit.value = Object.assign({}, client)
         const createNewClient = () =>
             newClient.value = new Client()
 
-        const getClients = async () => {
+        const getClients = async () => { //Запрос на получение списка клиентов
             try {
                 error.value = ""
                 clients.value = await getRequest()
@@ -41,7 +41,7 @@ export default defineComponent({
                 error.value = e.message
             }
         }
-        const updateClient = async () => {
+        const updateClient = async () => { //Запрос на обновление данных клиента
             try {
                 error.value = ""
                 if (clientInEdit.value === null) return
@@ -52,7 +52,7 @@ export default defineComponent({
                 error.value = e.message
             }
         }
-        const addClient = async () => {
+        const addClient = async () => { //Запрос на добавление нового клиента
             try {
                 error.value = ""
                 if (newClient.value === null) return
@@ -63,7 +63,7 @@ export default defineComponent({
                 error.value = e.message
             }
         }
-        const deleteClient = async (id: number) => {
+        const deleteClient = async (id: number) => {  //Запрос на удаление клиента
             try {
                 if (!confirm("Вы уверены что хотите удалить строку с id: " + id)) return
                 error.value = ""
@@ -73,7 +73,7 @@ export default defineComponent({
                 error.value = e.message
             }
         }
-        const cancelChanges = () => {
+        const cancelChanges = () => { //Функция отмены изменений
             error.value = ""
             clientInEdit.value = null
             newClient.value = null

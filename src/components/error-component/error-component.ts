@@ -8,15 +8,15 @@ export default defineComponent({
         }
     },
     setup(props){
-        const showError=ref(false)
-        const expectedInput=computed(()=>{
+        const showError=ref(false) //флаг скрытия/отображения ошибок
+        const expectedInput=computed(()=>{ //примерное ожидаемое значение поля
             return props.message.split('|')[1]?? ""
         })
-        const messageText=computed(()=>{
+        const messageText=computed(()=>{ //основной текст ошибки
             return props.message.split('|')[0]?? props.message
         })
         watch(() => props.message, () => {
-            showError.value=true
+            showError.value=true //если текст ошибки обновляется, выводим уведомление на экран
         });
         return{
             showError,
