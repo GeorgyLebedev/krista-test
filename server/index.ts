@@ -4,7 +4,6 @@ const app = express()
 app.set('port', 1111)
 import {connection} from "./connection.js";
 import {ClientModel} from "./models/ClientModel.js"; //Импорт файла с моделью данных
-await ClientModel.sync();
 app.use(cors({
     origin: 'http://localhost:8080',
     credentials: true,
@@ -57,6 +56,7 @@ app.delete('/clients/:id', async (req, res) => {
 })
 try {
     await connection.authenticate();
+    await ClientModel.sync();
     console.log('Connection has been established successfully.');
 } catch (error) {
     console.error('Unable to connect to the database:', error);
