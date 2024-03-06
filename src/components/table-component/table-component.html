@@ -1,19 +1,18 @@
-<error-component
-	:message="error"
->
+<error-component :message="error">
 </error-component>
-<section class="preloader-container" v-if="clients===undefined&&!error.length">
-    <div class="preloader-circle"></div>
-</section>
-<section class="data-table-container" id="dataTableContainer" v-if="clients!==undefined">
-    <h1 class="data-table-name">Клиенты</h1>
-    <table id="dataTable">
-	<thead>
-	<th></th>
-	<th v-for="header in headers">{{ header }}</th>
-	</thead>
-	<tbody>
-	<tr v-for="client in clients">
+<transition mode="out-in" name="fade" @transitionend="setFixedTableWidth()">
+    <section v-if="clients===undefined&&!error.length" class="preloader-container">
+	<div class="preloader-circle"></div>
+    </section>
+    <section v-else-if="clients!==undefined" id="dataTableContainer" class="data-table-container">
+	<h1 class="data-table-name">Клиенты</h1>
+	<table id="dataTable">
+	    <thead>
+	    <th></th>
+	    <th v-for="header in headers">{{ header }}</th>
+	    </thead>
+	    <tbody>
+	    <tr v-for="client in clients">
 	    <span v-if="clientInEdit?.id!==client.id">
 		<td class="buttons-container">
 		    <button class="icon-button" title="Удалить" type="button" @click="deleteClient(Number(client.id))">
@@ -25,7 +24,7 @@
 		</td>
 		<td v-for="data in client">{{ data }}</td>
 	    </span>
-	    <span v-else>
+		<span v-else>
 		<td class="buttons-container">
 		    <button class="icon-button" title="Сохранить" type="button" @click="updateClient()">
 			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABHklEQVR4nGNgGAXDDhinGbNKVTgL08Rw+3p7FoVipzUKxY6XqG9JaCizQpHTUsVip/+KRU475evtOahreLHjEpDhCsWOu2QKLTipbfhisOFFjrupa3h9PZNikdMiaLAcFC925aay4Y4LoC4/pJVlz4NXvWypixTR3quvZ1IocpoHcbnjfsl6Hy686pWKXcUUipzuEBWG9SDDHeeADS92OkBcsCBFFCgs8XiXUaHIaSokWJyOqJda8RI2HIslOMKUUaHYcQokKTodJc1wJEtgqQLNEkaFIsfJlBmObEmx00KYJeqlVryKxU6ToBF6TCXXg498w7FYoljk+BQaocepYzhyOi92nA+15KxchY0g9QxHtaRSqdyFn/qGjwJ6AQB6A4BJZcBEzQAAAABJRU5ErkJggg==">
@@ -36,13 +35,13 @@
 		</td>
 		<td v-for="(data,key) in client">
 		    <input v-model="clientInEdit[key]"
-			   :class="{'invalid-input':key.toString()==invalidField}"
-			   :disabled="key==='id'"
-			   type="text">
+	       :class="{'invalid-input':key.toString()==invalidField}"
+	       :disabled="key==='id'"
+	       type="text">
 		</td>
 	    </span>
-	</tr>
-	<tr v-if="newClient">
+	    </tr>
+	    <tr v-if="newClient">
 		<td class="buttons-container">
 		    <button class="icon-button" title="Сохранить" type="button" @click="addClient()">
 			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABHklEQVR4nGNgGAXDDhinGbNKVTgL08Rw+3p7FoVipzUKxY6XqG9JaCizQpHTUsVip/+KRU475evtOahreLHjEpDhCsWOu2QKLTipbfhisOFFjrupa3h9PZNikdMiaLAcFC925aay4Y4LoC4/pJVlz4NXvWypixTR3quvZ1IocpoHcbnjfsl6Hy686pWKXcUUipzuEBWG9SDDHeeADS92OkBcsCBFFCgs8XiXUaHIaSokWJyOqJda8RI2HIslOMKUUaHYcQokKTodJc1wJEtgqQLNEkaFIsfJlBmObEmx00KYJeqlVryKxU6ToBF6TCXXg498w7FYoljk+BQaocepYzhyOi92nA+15KxchY0g9QxHtaRSqdyFn/qGjwJ6AQB6A4BJZcBEzQAAAABJRU5ErkJggg==">
@@ -51,21 +50,23 @@
 			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB7klEQVR4nO3ZW0sCQRQA4AErqCjoAqaNe46wKPjan+yhfkVZMVDBFpGXmSUqn+zy0P2ln2JYK+jguq7u7IzbnkfRYT7OjnP2HELSSCON/x1OLrfEEffvyuUV3XtxCZnjALsuwNYkiKZA7AjE1pVtrxJNwQjJcMTD370AfNQLhfzYP+aIex6ioxPj/mXipH8vHOBi7AVq2ewyR3QlTPua0nWiIxPoIRC/XQAMtZAP5iEODCMkIxCrUia+XNumEy3YxQhEESeG+SCalG5PtXD34MsYjvioAsNUIYIwjXx+I2LEkTJEAOYpCkxsCAnDo8R4/07HA+cQ4FMZIgjjlkqbYddq7+zMC8RTGVEPc+lFjREAz2EwHuJMGyIKjDEIn5qs95i9jSruugiOeC4hwtVQujHGIgIw7zeWlet9h1UqC0YjBjAAjWGYmUGMyoxAfOGIl9Jnr81iMUtMjhali3Jm5Ez0P3IzieHSuTE+Wn5ZSUI2xCxhnCQcdmfEXWL8RRjmdjce4wwv631LFKOKxWkqYOMwThLKeCeCt0Rtr7gqmhCxNx1UdlJ0dVCEit5WbJjakNapogZdVRkmzmY2U4XR0ZFnKjrxumYkTPFspH1rWWskpmBRYBIzenMGq9l77cNQgIOJq+VEjKfTSCON5MUPqkM9flp6TNcAAAAASUVORK5CYII=">
 		    </button>
 		</td>
-	    <td v-for="(data,key) in newClient">
-		<input v-model="newClient[key]"
-		       :class="{'invalid-input':key.toString()==invalidField}"
-		       type="text">
-	    </td>
-	</tr>
-	</tbody>
-    </table>
-    <button class="add-new-row-button" @click="createNewClient()" v-if="!newClient">
-	<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABGUlEQVR4nO2Z4UrDQBCE9zG0PkwgzCRYfZ6mfy0+VvWZpPrHX5WjGyilRy6e7Z06H+y/PdjNzEGSMRNCfIuu6x4BvAD4ILkvXO8+y8OsJUg+VzD8/lwB2CQr4Qc+Sa4ALKwwABYABp8pzLZMOfTqzYNVBoDBldlONgc/hua+72+tMpqmufGHvJtsHr1olcLU+bTIlaAUyeSnrcpSimiRCFIkF1krgqyVi6wVQdb609bihT9nTYscoXet33hH5qBFIkiRXGStCLJWLrJWBFmrNqg/jZXBf6cIgJ2HKcUjt1Patr3zRd5sipCeVhy9rZOjtxABj2GoB5DVhaEk71MPbkrH0IzX09ynsAwSjnemZOEwwzZZCSGEnfIFWwzgGWRgGbgAAAAASUVORK5CYII=">
-	Добавить
-    </button>
-</section>
-<section v-else-if="error==='Network Error'" class="server-unavailable-message-container">
-    <h1 class="server-unavailable-message">Сервер недоступен</h1>
-</section>
-
+		<td v-for="(data,key) in newClient">
+		    <input v-model="newClient[key]"
+			   :class="{'invalid-input':key.toString()==invalidField}"
+			   type="text">
+		</td>
+	    </tr>
+	    </tbody>
+	</table>
+	<transition name="fade">
+	    <button v-if="!newClient" class="add-new-row-button" @click="createNewClient()">
+		<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABGUlEQVR4nO2Z4UrDQBCE9zG0PkwgzCRYfZ6mfy0+VvWZpPrHX5WjGyilRy6e7Z06H+y/PdjNzEGSMRNCfIuu6x4BvAD4ILkvXO8+y8OsJUg+VzD8/lwB2CQr4Qc+Sa4ALKwwABYABp8pzLZMOfTqzYNVBoDBldlONgc/hua+72+tMpqmufGHvJtsHr1olcLU+bTIlaAUyeSnrcpSimiRCFIkF1krgqyVi6wVQdb609bihT9nTYscoXet33hH5qBFIkiRXGStCLJWLrJWBFmrNqg/jZXBf6cIgJ2HKcUjt1Patr3zRd5sipCeVhy9rZOjtxABj2GoB5DVhaEk71MPbkrH0IzX09ynsAwSjnemZOEwwzZZCSGEnfIFWwzgGWRgGbgAAAAASUVORK5CYII=">
+		Добавить
+	    </button>
+	</transition>
+    </section>
+    <section v-else class="server-unavailable-message-container">
+	<h1 class="server-unavailable-message">Сервер недоступен</h1>
+    </section>
+</transition>
 

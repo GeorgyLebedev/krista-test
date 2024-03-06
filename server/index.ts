@@ -3,7 +3,7 @@ import cors from 'cors';
 const app = express()
 app.set('port', 1111)
 import {connection} from "./connection.js";
-import {ClientModel} from "./models/ClientModel.js";
+import {ClientModel} from "./models/ClientModel.js"; //Импорт файла с моделью данных
 await ClientModel.sync();
 app.use(cors({
     origin: 'http://localhost:8080',
@@ -16,7 +16,7 @@ app.listen(app.get('port'), () => { // вывод информации о зап
 });
 
 app.get('/clients', async (req, res) => {
-    try {
+    try { // выборка всех данных из таблицы
         const result = await ClientModel.findAll({
             attributes:{include:[[connection.cast(connection.col('createdAt'), 'VARCHAR') , 'createdAt']],exclude:['createdAt']},
             order: [['id', 'asc']]
@@ -28,7 +28,7 @@ app.get('/clients', async (req, res) => {
     }
 })
 app.post('/clients', async (req, res) => {
-    try {
+    try { // добавление новой записи в таблицу
         const result = await ClientModel.create(req.body)
         res.json(result)
     } catch (e) {
@@ -36,7 +36,7 @@ app.post('/clients', async (req, res) => {
     }
 })
 app.put('/clients/:id', async (req, res) => {
-    try {
+    try { // изменение записи в таблице
         const result = await ClientModel.update(req.body, {
             where: {
                 id: req.params.id
@@ -48,7 +48,7 @@ app.put('/clients/:id', async (req, res) => {
     }
 })
 app.delete('/clients/:id', async (req, res) => {
-    try {
+    try { // удаление записи из таблицы
         const result = await ClientModel.destroy({where: {id: req.params.id}})
         res.json(result)
     } catch (e) {

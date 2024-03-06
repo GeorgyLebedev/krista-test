@@ -2,7 +2,6 @@ interface iClient {
     id: string | number,
     name: string,
     surname: string,
-
     birthDate: string,
     phoneNumber: string,
     email: string,

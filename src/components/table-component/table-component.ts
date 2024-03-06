@@ -1,4 +1,4 @@
-import {computed, defineComponent, Ref, ref, onMounted} from "vue";
+import {computed, defineComponent, Ref, ref, onMounted, onUpdated} from "vue";
 import Client from "@/types/Client";
 import {getRequest, postRequest, patchRequest, deleteRequest} from "@/modules/axiosModule";
 import errorComponent from "@/components/error-component/error-component.vue";
@@ -11,11 +11,8 @@ export default defineComponent({
     setup() {
         onMounted(async () => {
             await getClients()
-            if(!clients.value?.length) return
-            const elementWidth = document.getElementById('dataTable')!.offsetWidth; //настраиваем статичную ширину таблицы
-            document.getElementById('dataTable')!.style.maxWidth = `${elementWidth}px`;
-            document.getElementById('dataTable')!.style.minWidth = `${elementWidth}px`;
         })
+
         const headers: Array<string> = Object.keys(new Client()) //Список заголовков таблицы
         const clients: Ref<Array<Client> | []|undefined> = ref(undefined) //Массив данных о клиентах
         const clientInEdit: Ref<Client | null> = ref(null) //Редактируемые данные клиента
@@ -32,7 +29,12 @@ export default defineComponent({
             clientInEdit.value = Object.assign({}, client)
         const createNewClient = () =>
             newClient.value = new Client()
-
+        const setFixedTableWidth=()=>{ //настраиваем статичную ширину таблицы
+            const table=document.getElementById('dataTable')
+            if(!table) return
+            table.style.maxWidth = `${table.offsetWidth}px`;
+            table.style.minWidth = `${table.offsetWidth}px`;
+        }
         const getClients = async () => { //Запрос на получение списка клиентов
             try {
                 error.value = ""
@@ -65,7 +67,7 @@ export default defineComponent({
         }
         const deleteClient = async (id: number) => {  //Запрос на удаление клиента
             try {
-                if (!confirm("Вы уверены что хотите удалить строку с id: " + id)) return
+                if (!confirm("Вы уверены что хотите удалить строку (id: " + id+')?')) return
                 error.value = ""
                 await deleteRequest(id)
                 await getClients()
@@ -85,6 +87,7 @@ export default defineComponent({
             clientInEdit,
             newClient,
             invalidField,
+            setFixedTableWidth,
             setClientInEdit,
             createNewClient,
             cancelChanges,

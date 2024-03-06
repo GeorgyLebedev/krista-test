@@ -4,7 +4,6 @@ thead
   background: #96c1ce
 tr
   transition: all 0.2s ease-in-out
-  position: relative
   &:nth-child(even)
     background: gainsboro
   &:nth-child(odd)
@@ -121,3 +120,13 @@ span
     transform: rotate(0deg)
   100%
     transform: rotate(360deg)
+
+.fade-enter-active,
+.fade-leave-active
+  transition: all 0.25s ease
+
+
+.fade-enter-from,
+.fade-leave-to
+  opacity: 0
+
