@@ -41,6 +41,7 @@
 		</td>
 	    </span>
 	    </tr>
+	    <transition name="fade">
 	    <tr v-if="newClient">
 		<td class="buttons-container">
 		    <button class="icon-button" title="Сохранить" type="button" @click="addClient()">
@@ -56,6 +57,7 @@
 			   type="text">
 		</td>
 	    </tr>
+	    </transition>
 	    </tbody>
 	</table>
 	<transition name="fade">

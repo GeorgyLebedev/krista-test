@@ -66,9 +66,8 @@ export const ClientModel = connection.define("client", {
         type: DataTypes.DATE,
         allowNull: true,
         validate: {
-            isValidDate(value:any) {
+            isValidDate(value:string) {
                 if (!value) return
-                // Валидация даты
                 if (isNaN(Date.parse(value))) {
                     throw new Error("createdAt: поле не корректно!|Ожидается строка, подобная: \"ДД-ММ-ГГГГ\"");
                 }

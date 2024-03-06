@@ -23,7 +23,7 @@ app.get('/clients', async (req, res) => {
         })
         res.json(result)
     } catch
-        (e) {
+        (e:any) {
         res.json(e)
     }
 })
@@ -31,7 +31,7 @@ app.post('/clients', async (req, res) => {
     try { // добавление новой записи в таблицу
         const result = await ClientModel.create(req.body)
         res.json(result)
-    } catch (e) {
+    } catch (e:any) {
         res.json(e)
     }
 })
@@ -43,7 +43,7 @@ app.put('/clients/:id', async (req, res) => {
             }
         })
         res.json(result)
-    } catch (e) {
+    } catch (e:any) {
         res.json(e)
     }
 })
@@ -51,7 +51,7 @@ app.delete('/clients/:id', async (req, res) => {
     try { // удаление записи из таблицы
         const result = await ClientModel.destroy({where: {id: req.params.id}})
         res.json(result)
-    } catch (e) {
+    } catch (e:any) {
         res.json(e)
     }
 })
