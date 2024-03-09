@@ -35,7 +35,7 @@ export const ClientModel = connection.define("client", {
         validate: {
             isDate: {
                 args: true,
-                msg: "birthDate: поле не корректно!|Ожидается строка, подобная: \"ДД-ММ-ГГГГ\"",
+                msg: "birthDate: поле не корректно!|Ожидается строка, подобная: \"ГГГГ-ММ-ДД\"",
             }
 
         }

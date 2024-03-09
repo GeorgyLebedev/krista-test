@@ -3,7 +3,8 @@ import cors from 'cors';
 const app = express()
 app.set('port', 1111)
 import {connection} from "./connection.js";
-import {ClientModel} from "./models/ClientModel.js"; //Импорт файла с моделью данных
+import {ClientModel} from "./models/ClientModel.js";
+import {FindAttributeOptions} from "sequelize"; //Импорт файла с моделью данных
 app.use(cors({
     origin: 'http://localhost:8080',
     credentials: true,
@@ -13,12 +14,20 @@ app.use(express.urlencoded({extended: true}))
 app.listen(app.get('port'), () => { // вывод информации о запуске сервера
     console.log(`[OK] Server is running on localhost:${app.get('port')}`);
 });
-
+const clientAttributes:FindAttributeOptions=[
+    "id",
+    "name",
+    "surname",
+    "birthDate",
+    "phoneNumber",
+    "email",
+    [connection.fn('to_char', connection.col('createdAt'), 'YYYY-MM-DD HH:MI:SS'), "createdAt"]
+]
 app.get('/clients', async (req, res) => {
     try { // выборка всех данных из таблицы
         const result = await ClientModel.findAll({
-            attributes:{include:[[connection.cast(connection.col('createdAt'), 'VARCHAR') , 'createdAt']],exclude:['createdAt']},
-            order: [['id', 'asc']]
+            order: [['id', 'asc']],
+            attributes:clientAttributes
         })
         res.json(result)
     } catch
@@ -28,8 +37,14 @@ app.get('/clients', async (req, res) => {
 })
 app.post('/clients', async (req, res) => {
     try { // добавление новой записи в таблицу
-        const result = await ClientModel.create(req.body)
-        res.json(result)
+        await ClientModel.create(req.body)
+        res.json(await ClientModel.findOne({
+            attributes:clientAttributes,
+            where:{
+                id: req.body.id,
+            },
+
+        }))
     } catch (e:any) {
         res.json(e)
     }

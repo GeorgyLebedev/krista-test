@@ -2,15 +2,15 @@
     <error-component :message="error">
     </error-component>
     <table-component
-        :tableData="tableData"
-        :tableHeaders="tableHeaders"
-        :invalidField="invalidField"
-        :successOperation="successOperation"
-        :serverUnavailable="serverUnavailable"
-        @addRow="insertTableData"
-        @updateRow="updateTableData"
-        @deleteRow="deleteTableData"
-        @clearError="clearError"
+	    :invalidField="invalidField"
+	    :serverUnavailable="serverUnavailable"
+	    :successOperation="successOperation"
+	    :tableData="tableData"
+	    :tableHeaders="tableHeaders"
+	    @addRow="insertTableData"
+	    @clearError="clearError"
+	    @deleteRow="deleteTableData"
+	    @updateRow="updateTableData"
     >
     </table-component>
 </template>
@@ -21,23 +21,25 @@ import tableComponent from "@/components/table-component/table-component.vue";
 import errorComponent from "@/components/error-component/error-component.vue";
 import {getRequest, postRequest, patchRequest, deleteRequest} from "@/modules/axiosModule";
 import Client from "@/types/Client";
+
 export default defineComponent({
     name: 'App',
     components: {
         tableComponent,
         errorComponent
     },
-    setup(){
-        const successOperation=ref(undefined as undefined|boolean)
-        const error=ref("")
-        const tableData=ref(undefined as undefined|Array<Client>)
+    setup() {
+        const operationResult = ref(undefined as any)
+        const error = ref("")
+        const tableData = ref(undefined as undefined | Array<Client>)
         onMounted(async () => {
             await selectTableData()
         })
-        const clearError=()=>error.value=""
-        const serverUnavailable=computed(()=>error.value==='Network Error')
-        const tableHeaders=computed(() =>{
-            return tableData.value?.length? Object.keys(tableData.value[0]) :Object.keys(new Client())
+        const clearError = () => error.value = ""
+				const successOperation=computed(()=>Boolean(operationResult.value))
+        const serverUnavailable = computed(() => error.value === 'Network Error')
+        const tableHeaders = computed(() => {
+            return tableData.value?.length ? Object.keys(tableData.value[0]) : Object.keys(new Client())
         })
         const invalidField = computed(() => { //Вычисляемое свойство с именем некорректного поля
             if (!error.value.length) return ""
@@ -46,50 +48,57 @@ export default defineComponent({
                     return key
             return ""
         })
-        const selectTableData=async ()=>{
+        const selectTableData = async () => {
             try {
                 tableData.value = await getRequest()
-            }
-            catch (e:any){
-                error.value=e.message
-            }
-        }
-        const updateTableData=async (updatedData: any)=>{
-            try{
-                successOperation.value=undefined
-                successOperation.value=await patchRequest(updatedData)??false
-                await selectTableData()
-            }
-            catch (e:any){
-                error.value=e.message
+            } catch (e: any) {
+                error.value = e.message
             }
         }
-        const insertTableData=async (newData:any)=>{
-            try{
-                successOperation.value=undefined
-                successOperation.value=await postRequest(newData)??false
-                await selectTableData()
+        const updateTableData = async (updatedData: any) => {
+            try {
+                operationResult.value = undefined
+                operationResult.value = await patchRequest(updatedData)
+								if (operationResult.value){
+									const index = tableData.value?.findIndex(obj => obj.id === updatedData.id) as number
+									(tableData.value as Array<Client>)[index]=updatedData
+								}
+            } catch (e: any) {
+                error.value = e.message
             }
-            catch (e:any){
-                error.value=e.message
+        }
+        const insertTableData = async (newData: any) => {
+            try {
+                operationResult.value = undefined
+                operationResult.value = await postRequest(newData)
+                if (operationResult.value) {
+									tableData.value?.push(operationResult.value)
+									tableData.value?.sort((a, b) => {
+										return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+									});
+								}
+            } catch (e: any) {
+                error.value = e.message
             }
         }
-        const deleteTableData=async (id:number)=> {
-        try{
-            successOperation.value=undefined
-            successOperation.value=await deleteRequest(id)??false
-            await selectTableData()
+        const deleteTableData = async (id: number) => {
+            try {
+                operationResult.value = undefined
+                operationResult.value = await deleteRequest(id)
+                if (operationResult.value) {
+                    const index = tableData.value?.findIndex(obj => obj.id === id);
+                    tableData.value?.splice(index as number, 1);
+                }
+            } catch (e: any) {
+                error.value = e.message
+            }
         }
-        catch (e:any) {
-            error.value=e.message
-        }
-        }
-        return{
+        return {
             error,
             tableData,
             tableHeaders,
             invalidField,
-            successOperation,
+						successOperation,
             serverUnavailable,
             selectTableData,
             insertTableData,
